@@ -23,14 +23,16 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h3 >
-        <Link to="/" className="logo">UpShare</Link>
+      <h3>
+        <Link to="/" className="logo">
+          UpShare
+        </Link>
       </h3>
       <ul
         className={isMobile ? "nav-links-mobile active" : "nav-links"}
         onClick={() => setIsMobile(false)}
       >
-        <Link to="/Secondpage" className="item">
+        <Link to="/upload" className="item">
           <li>Upload</li>
         </Link>
         <Link to="/working" className="item">
@@ -60,4 +62,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

@@ -43,10 +43,10 @@ function Firstpage() {
             <button
               className="hero-button"
               onClick={() => {
-                window.location.href = "/secondpage";
+                window.location.href = "/upload";
               }}
             >
-              <Link className="hero-button-text" to="/secondpage">
+              <Link className="hero-button-text" to="/upload">
                 Click here to Upload the file
               </Link>
             </button>
@@ -58,10 +58,10 @@ function Firstpage() {
       <div className="animate-section">
         <h2 className="animate-heading">What is UpShare ?</h2>
         <p className="animate-para">
-          UpShare is a decentralized file storage system that uses
-          blockchain technology to ensure secure and transparent data storage
-          and retrieval. Users have complete control over their data and can
-          share it with others using advanced encryption and access control
+          UpShare is a decentralized file storage system that uses blockchain
+          technology to ensure secure and transparent data storage and
+          retrieval. Users have complete control over their data and can share
+          it with others using advanced encryption and access control
           mechanisms. It provides a secure and reliable platform for users to
           store and share files without compromising privacy or security. With
           UpShare, data management becomes decentralized and transparent, a
@@ -135,16 +135,15 @@ function Firstpage() {
       <div className="about">
         <h2 className="about-heading">About Us</h2>
         <p className="about-text">
-          At UpShare, we believe that data ownership and privacy are
-          fundamental rights that should be protected in the digital age.
-          That&apos;s why we&apos;ve created a decentralized file storage system
-          that puts you in control of your data. Our team of experienced
-          developers and blockchain experts have designed a secure,
-          decentralized network that allows you to store and access your files
-          from anywhere, without relying on a central authority. By using
-          blockchain technology, we ensure that your data is encrypted,
-          tamper-proof, and always available, even in the face of network
-          outages or attacks.
+          At UpShare, we believe that data ownership and privacy are fundamental
+          rights that should be protected in the digital age. That&apos;s why
+          we&apos;ve created a decentralized file storage system that puts you
+          in control of your data. Our team of experienced developers and
+          blockchain experts have designed a secure, decentralized network that
+          allows you to store and access your files from anywhere, without
+          relying on a central authority. By using blockchain technology, we
+          ensure that your data is encrypted, tamper-proof, and always
+          available, even in the face of network outages or attacks.
         </p>
       </div>
 
@@ -165,9 +164,7 @@ function Firstpage() {
         </div>
 
         <div className="column3">
-          <p className="Column3-text">
-            © 2023 UpShare. All rights reserved
-          </p>
+          <p className="Column3-text">© 2023 UpShare. All rights reserved</p>
         </div>
       </div>
     </div>
