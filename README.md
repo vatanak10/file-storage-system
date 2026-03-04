@@ -1,118 +1,173 @@
 # Decentralized File Storage System
 
-Web-based application for secure file storage on the blockchain
+A simple decentralized application (dApp) that lets users upload files to IPFS and store the
+resulting hashes on an Ethereum smart contract. Owners can share or revoke access via an
+on‑chain allow‑list. The React frontend interacts directly with MetaMask and the deployed
+contract.
 
-## Overview
+---
 
-The Decentralized File Storage System is a web-based application built on web3 technology that enables users to securely upload and store files on the blockchain. It allows users to access and view their files directly from the browser when connected to the same wallet. Additionally, users can share files with other users by leveraging the allowlist feature, which allows specific addresses to access the shared files. Furthermore, the system provides the ability to disallow specific addresses from viewing the files, ensuring privacy and control over shared content.
+## 🚀 Overview
 
-## Features
+Files are pinned to IPFS through Pinata; only the hash is saved on chain by the `Upload`
+contract. When a wallet connects, the UI fetches that address's hashes (plus any shared with
+them) and renders images/videos. Owners manage access with `allow`/`disallow` functions.
 
-- **File Upload on Blockchain**: Users can upload their files to the blockchain, ensuring their data is securely stored and tamper-proof.
+The repository contains the frontend application (under `client/`) and Hardhat configuration
+to build/deploy the contract.
 
-- **Direct Browser Access**: Users can directly access and view their files through a web browser when connected to the same wallet.
+---
 
-- **File Sharing**: Users can share files with other users by adding their addresses to the allowlist, granting them access to the shared content.
+## ⭐ Key Features
 
-- **Allowlist Management**: Users can easily manage the allowlist by adding or removing addresses, controlling who can view the shared files.
+1. **Upload any file**: Pins to IPFS and records the hash on Ethereum.
+2. **View your files**: Files are displayed in the browser when connected to the same wallet.
+3. **Share/revoke access**: Add other addresses to an allow‑list or remove them.
+4. **Delete URLs**: Owners may remove previously stored hashes.
+5. **Frontend only**: No backend server—everything runs in the browser and on-chain.
 
-- **Privacy and Security**: The system provides privacy and security by allowing users to disallow specific addresses from accessing their files, maintaining control over shared content.
+---
 
-## Tech Stack
+## 🧱 Tech Stack
 
-- Front-end: HTML, CSS, JavaScript
+| Layer          | Technology                    |
+| -------------- | ----------------------------- |
+| Smart contract | Solidity, Hardhat             |
+| Frontend       | React 18 (Create React App)   |
+| Web3 library   | ethers.js                     |
+| Storage        | IPFS (via Pinata API)         |
+| HTTP client    | axios                         |
+| Network        | Mumbai testnet (configurable) |
 
-- Back-end : Solidity, Hardhat(localhost) [Later deployed on mumbai testnet]
+> **Note:** the project previously mentioned Web3.js and a `config.js` file; current code
+> does not use those.
 
-- Blockchain Integration: Web3.js
+---
 
-- API: Axios
+## 🔧 Prerequisites
 
-- Framework: ReactJS
+- Node.js 18+ and npm (or yarn).
+- MetaMask or another EIP‑1193 wallet in your browser.
+- A `.env` file in `client/` with the following variables:
+  ```env
+  API_URL=<rpc-url>            # e.g. https://rpc-mumbai.maticvigil.com
+  PRIVATE_KEY=<deployer-key>   # used by Hardhat deploy script
+  REACT_APP_CONTRACT_ADDRESS=   # optional, see Deployment section
+  REACT_APP_PINATA_KEY=        # Pinata API key (frontend only)
+  REACT_APP_PINATA_SECRET=     # Pinata secret key (frontend only)
+  ```
 
-- Storage: Pinata
+> **Security:** Never commit private keys or secrets. Move Pinata credentials to environment
+> variables or a backend service; the current code hard‑codes them, which is unsafe.
 
-## Demo
+---
 
-https://file-storage-system.vercel.app/
+## 📦 Installation & Setup
 
-## Installation
+```bash
+# clone repository
+git clone https://github.com/vatanak10/file-storage-system.git
+cd file-storage-system/client
 
-1. Clone the repository:
-
-   ```shell
-
-   git clone https://github.com/Bhanu1776/File-Storage-System
-
-   ```
-
-2. Navigate to the project directory:
-
-```
-cd client
-```
-
-3. Install the dependencies
-
-```
+# install dependencies
 npm install
 ```
 
-4. Configure the project:
+Create the `.env` file described above.  
+If you deploy a new contract, set `REACT_APP_CONTRACT_ADDRESS` to the deployed address.
 
-- Update the blockchain connection settings in the config.js file.
-- Set up the necessary API keys or environment variables for blockchain integration.
+---
 
-5. Start the application:
+## 🔨 Building & Deployment
 
-```shell
+### Compile contracts
+
+```bash
+npx hardhat compile
+```
+
+### Deploy to a network
+
+By default the deployment script uses `API_URL` and `PRIVATE_KEY` from `.env`.
+
+```bash
+npx hardhat run scripts/deploy.js --network mumbai
+```
+
+The script prints the deployed address.  
+Copy it into `.env` or replace the constant in `src/components/Secondpage.js`.
+
+> **Tip:** the frontend currently imports the ABI from
+> `src/components/artifacts/Upload.sol/Upload.json`; Hardhat is configured to write
+> artifacts there so the React app can access them directly.
+
+### Local development
+
+You can also run a local Hardhat network:
+
+```bash
+npx hardhat node
+# in another terminal, deploy to localhost
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+---
+
+## ▶️ Running the App
+
+Start the React development server:
+
+```bash
 npm start
 ```
 
-## Usage
+Open `http://localhost:3000` in your browser, connect MetaMask (make sure it’s set to the
+same network as the contract), and interact with the UI.
 
-- Open the application in your web browser.
+---
 
-- Connect your wallet to the application by selecting the appropriate wallet provider and authorizing the connection.
+## 📝 Usage
 
-- Upload files by clicking on the "Upload" button and selecting the desired files from your local machine.
+1. Connect wallet via the **Connect Wallet** button.
+2. Upload a file: choose a file and click **Upload**.
+3. View files listed below the upload form.
+4. To share, click **Share** next to a file and enter an address.
+5. To revoke, use **Revoke access** or **Delete**.
+6. The allow‑list page shows current addresses with access.
 
-- View your files directly from the browser interface when connected to the same wallet.
+---
 
-- Share files with other users by adding their addresses to the allowlist in the application settings.
+## 🏗 Development & Testing
 
-- Manage the allowlist by adding or removing addresses to control access to the shared files.
+There are currently no automated tests. To add some:
 
-- Disallow specific addresses to revoke their access to the shared content.
+- Create Solidity tests in `client/test/` using Hardhat and Waffle.
+- Write React component tests with Jest/React Testing Library.
 
-## Contributing
+Feel free to submit tests along with any feature work.
 
-Contributions are welcome! If you would like to contribute to this project, please follow these steps:
+---
 
-1. Fork the repository.
+## 🤝 Contributing
 
-2. Create a new branch for your feature or bug fix.
+1. Fork the repo and create a feature branch.
+2. Commit your changes with clear messages.
+3. Push to your fork and open a pull request against `develop` (or `main`).
 
-3. Make your changes and commit them with descriptive commit messages.
+See the `CONTRIBUTING` file for more detail (if added later).
 
-4. Push your changes to your forked repository.
+---
 
-5. Submit a pull request to the main repository.
+## 📄 License & Credits
 
+This project is licensed under the **MIT License**.  
+See [LICENSE](LICENSE) for details.
 
-## Contributors 💣
+© 2023–2026 Osama Shaikh and contributors.
 
-<a href="https://github.com/Bhanu1776/File-Storage-System/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Bhanu1776/File-Storage-System" />
-</a>
+---
 
-## Support Me 🫂
+## ⚠️ Acknowledgements
 
-<a href="https://www.buymeacoffee.com/Bhanu1776"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a>
-
-<hr>
-
-© 2023 Bhanu Sunka and contributors\
-This project is licensed under the [**MIT license**](https://github.com/Bhanu1776/File-Storage-System/blob/master/LICENSE).
-
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+- Built with **love** and **for fun**.
+- Please keep your API keys private and do not expose them in source control.
